@@ -21,6 +21,8 @@ def to_cor():
 \def\FcReluColor{rgb:blue,5;red,5;white,4}
 \def\SoftmaxColor{rgb:magenta,5;black,7}   
 \def\SumColor{rgb:blue,5;green,15}
+\def\mycolor{rgb:blue,8;green,12}
+\def\mypoint{rgb:blue,5;green,11;white,4}
 """
 
 def to_begin():
@@ -59,7 +61,7 @@ def to_Conv( name, s_filer=256, n_filer=64, offset="(0,0,0)", to="(0,0,0)", widt
 
 # Conv,Conv,relu
 # Bottleneck
-def to_ConvConvRelu( name, s_filer=256, n_filer=(64,64), offset="(0,0,0)", to="(0,0,0)", width=(2,2), height=40, depth=40, caption=" " ):
+def to_ConvConvRelu( name, s_filer=256, n_filer=(64,64), offset="(0,0,0)", to="(0,0,0)", width=(2,2), height=64, depth=64, caption=" " ):
     return r"""
 \pic[shift={ """+ offset +""" }] at """+ to +""" 
     {RightBandedBox={
@@ -67,8 +69,8 @@ def to_ConvConvRelu( name, s_filer=256, n_filer=(64,64), offset="(0,0,0)", to="(
         caption="""+ caption +""",
         xlabel={{ """+ str(n_filer[0]) +""", """+ str(n_filer[1]) +""" }},
         zlabel="""+ str(s_filer) +""",
-        fill=\ConvColor,
-        bandfill=\ConvReluColor,
+        fill=\mycolor,
+        bandfill=\mycolor,
         height="""+ str(height) +""",
         width={ """+ str(width[0]) +""" , """+ str(width[1]) +""" },
         depth="""+ str(depth) +"""
@@ -79,7 +81,7 @@ def to_ConvConvRelu( name, s_filer=256, n_filer=(64,64), offset="(0,0,0)", to="(
 
 
 # Pool
-def to_Pool(name, offset="(0,0,0)", to="(0,0,0)", width=1, height=32, depth=32, opacity=0.5, caption=" "):
+def to_Pool(name, offset="(0,0,0)", to="(0,0,0)", width=1, height=64, depth=64, opacity=0.5, caption=" "):
     return r"""
 \pic[shift={ """+ offset +""" }] at """+ to +""" 
     {Box={
@@ -93,6 +95,21 @@ def to_Pool(name, offset="(0,0,0)", to="(0,0,0)", width=1, height=32, depth=32, 
         }
     };
 """
+def to_act(name, offset="(0,0,0)", to="(0,0,0)", width=1, height=64, depth=64, opacity=0.5, caption=" "):
+    return r"""
+\pic[shift={ """+ offset +""" }] at """+ to +""" 
+    {Box={
+        name="""+name+""",
+        caption="""+ caption +r""",
+        fill=\mycolor,
+        opacity="""+ str(opacity) +""",
+        height="""+ str(height) +""",
+        width="""+ str(width) +""",
+        depth="""+ str(depth) +"""
+        }
+    };
+"""
+
 
 # unpool4, 
 def to_UnPool(name, offset="(0,0,0)", to="(0,0,0)", width=1, height=32, depth=32, opacity=0.5, caption=" "):
@@ -164,6 +181,24 @@ def to_SoftMax( name, s_filer=10, offset="(0,0,0)", to="(0,0,0)", width=1.5, hei
         }
     };
 """
+
+def to_POINT( name, s_filer=10, offset="(0,0,0)", to="(0,0,0)", width=1.5, height=3, depth=25, opacity=0.8, caption=" " ):
+    return r"""
+\pic[shift={"""+ offset +"""}] at """+ to +""" 
+    {Box={
+        name=""" + name +""",
+        caption="""+ caption +""",
+        xlabel={{" ","dummy"}},
+        zlabel="""+ str(s_filer) +""",
+        fill=\mypoint,
+        opacity="""+ str(opacity) +""",
+        height="""+ str(height) +""",
+        width="""+ str(width) +""",
+        depth="""+ str(depth) +"""
+        }
+    };
+"""
+
 
 def to_Sum( name, offset="(0,0,0)", to="(0,0,0)", radius=2.5, opacity=0.6):
     return r"""
